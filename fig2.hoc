@@ -1,0 +1,92 @@
+// inf_states.hoc
+// graphs the states infinity values
+
+objref v_vec
+{v_vec=new Vector((40-(-120))/.25)}
+
+{v_vec.indgen(-120,40,0.25)}
+{s = v_vec.size()}
+
+objref tau_m_nattxs_vec, tau_h_nattxs_vec, m_nattxs_vec, h_nattxs_vec
+
+objref m_nav1p9_vec, h_nav1p9_vec
+objref tau_m_nav1p9_vec, tau_h_nav1p9_vec
+
+// tau_m_nattxs_vec=new Vector(s)
+
+{    m_nattxs_vec=new Vector(s)}
+{    h_nattxs_vec=new Vector(s)}
+{tau_m_nattxs_vec=new Vector(s)}
+{tau_h_nattxs_vec=new Vector(s)}
+
+{    m_nav1p9_vec=new Vector(s)}
+{    h_nav1p9_vec=new Vector(s)}
+{tau_m_nav1p9_vec=new Vector(s)}
+{tau_h_nav1p9_vec=new Vector(s)}
+
+for i=0,v_vec.size()-1 {
+	{v_init=v_vec.x[i]}
+	init()
+	{m_nattxs_vec.x[i]=soma.m_nattxs( 0.5 )}
+	{h_nattxs_vec.x[i]=soma.h_nattxs( 0.5 )}
+	{tau_m_nattxs_vec.x[i]=soma.tau_m_nattxs( 0.5 )}
+	{tau_h_nattxs_vec.x[i]=soma.tau_h_nattxs( 0.5 )}
+
+	{m_nav1p9_vec.x[i]=soma.m_nav1p9( 0.5 )}
+	{h_nav1p9_vec.x[i]=soma.h_nav1p9( 0.5 )}
+	{tau_m_nav1p9_vec.x[i]=soma.tau_m_nav1p9( 0.5 )}
+	{tau_h_nav1p9_vec.x[i]=soma.tau_h_nav1p9( 0.5 )}
+}
+
+objref vbox    // three rows (of two columns)
+objref hbox[3] // one hbox for each row, each will contain two graphs
+objref g[6]    // six graphs total
+
+{vbox = new VBox()}
+{vbox.intercept(1)}
+
+  {hbox[0] = new HBox()}
+  {hbox[0].intercept(1)}
+    // first row is activation/inact curves for ttx-s, ttx-rp
+    {g[0]=new Graph()}
+      {m_nattxs_vec.label("m_nattxs")}
+      {h_nattxs_vec.label("h_nattxs")}
+      {m_nattxs_vec.line(g[0],v_vec,1,0)}
+      {h_nattxs_vec.line(g[0],v_vec,2,0)}
+	{g[0].exec_menu("View = plot")}
+
+    {g[1]=new Graph()}
+      {m_nav1p9_vec.label("m_nav1p9")}
+      {h_nav1p9_vec.label("h_nav1p9")}
+      {m_nav1p9_vec.line(g[1],v_vec,1,0)}
+      {h_nav1p9_vec.line(g[1],v_vec,2,0)}
+	{g[1].exec_menu("View = plot")}
+
+  {hbox[0].intercept(0)}
+  {hbox[0].map()}
+  {hbox[1] = new HBox()}
+  {hbox[1].intercept(1)}
+    {g[2]=new Graph()}
+      {tau_m_nattxs_vec.label("tau_m_nattxs")}
+      {tau_m_nattxs_vec.line(g[2],v_vec)}
+	{g[2].exec_menu("View = plot")}
+    {g[3]=new Graph()}
+      {tau_m_nav1p9_vec.label("tau_m_nav1p9")}
+      {tau_m_nav1p9_vec.line(g[3],v_vec)}
+	{g[3].exec_menu("View = plot")}
+  {hbox[1].intercept(0)}
+  {hbox[1].map()}
+  {hbox[2] = new HBox()}
+  {hbox[2].intercept(1)}
+    {g[4]=new Graph()}
+      {tau_h_nattxs_vec.label("tau_h_nattxs")}
+      {tau_h_nattxs_vec.line(g[4],v_vec)}
+	{g[4].exec_menu("View = plot")}
+    {g[5]=new Graph()}
+      {tau_h_nav1p9_vec.label("tau_h_nav1p9")}
+      {tau_h_nav1p9_vec.line(g[5],v_vec)}
+	{g[5].exec_menu("View = plot")}
+  {hbox[2].intercept(0)}
+  {hbox[2].map()}
+{vbox.intercept(0)}
+{vbox.map("fig 2 Herzog et al. 2001", 360, 15, 620, 580)}

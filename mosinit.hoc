@@ -1,0 +1,22 @@
+load_file("nrngui.hoc")
+load_file("create_cell.hoc")
+
+strdef tstr
+
+xpanel("Figures from Herzog et al. 2001")
+xlabel("To reproduce a below figures click a button")
+xbutton("Figure 2","restart_(\"fig2\")")
+xbutton("Figure 4","restart_(\"fig4\")")
+xbutton("Exit","quit()")
+xpanel(5,100)
+
+pwmcnt = PWManager[0].count // the initial gui should not be dismissed
+
+proc restart_() {local i
+	for (i= PWManager[0].count-1; i >= pwmcnt; i -= 1) {
+		PWManager[0].close(i)
+		doNotify()
+	}
+	sprint(tstr, "%s.hoc", $s1)
+	load_file(1, tstr)
+}

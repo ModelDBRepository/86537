@@ -1,0 +1,91 @@
+// fig4.hoc
+// fig4 from Herzog et al. 2001
+
+//fig4 A
+
+print "Calculating figure 4.  Please wait."
+
+objref electrode
+
+{soma  electrode = new SEClamp(0.5)}
+
+electrode.rs = 0.01
+electrode.dur1 = 10
+electrode.amp1 = -120
+electrode.dur2 = 200
+electrode.amp2 = 40
+electrode.dur3 = 50
+electrode.amp3 = -120
+
+objref hbox
+{hbox = new HBox()}
+{hbox.intercept(1)}
+
+objref g[3] // fig 4A, 4B, and 4C
+
+// fig 4A
+{g[0] = new Graph()}
+
+electrode.dur2=200
+tstop = 220
+objref current_vec, time_vec
+{current_vec = new Vector()}
+{time_vec =  new Vector()}
+
+{current_vec.record(&soma.i_nav1p9(0.5),dt)} // this is the ttx-rp current
+{time_vec.record(&t,dt)}
+
+for (test_pulse=-80; test_pulse<=40; test_pulse +=10) {
+	electrode.amp2 = test_pulse
+	init()
+	run()
+	{current_vec.line(g[0], time_vec)}
+}
+{g[0].exec_menu("View = plot")}
+{g[0].label(0.6,0.1,"4A")}
+print "fig 4A calculated 1/3"
+
+// fig 4B
+
+{g[1] = new Graph()}
+
+electrode.dur2=30
+tstop = 50
+
+objref current_vec1
+{current_vec1 = new Vector()}
+
+{current_vec1.record(&soma.i_nattxs(0.5),dt)} // ttx-sensitive current
+{time_vec.record(&t,dt)}
+
+for (test_pulse=-80; test_pulse<=40; test_pulse +=10) {
+	electrode.amp2 = test_pulse
+	init()
+	run()
+	{current_vec1.line(g[1], time_vec)}
+}
+{g[1].exec_menu("View = plot")}
+{g[1].label(0.6,0.1,"4B")}
+print "fig 4B calculated 2/3"
+
+// fig 4C
+
+{g[2] = new Graph()}
+
+electrode.dur2=200
+tstop = 220
+
+// use previous current_vec's and time
+
+for (test_pulse=-80; test_pulse<=40; test_pulse +=10) {
+	electrode.amp2 = test_pulse
+	init()
+	run()
+	{current_vec.add(current_vec1).line(g[2], time_vec)}
+}
+{g[2].exec_menu("View = plot")}
+{g[2].label(0.6,0.1,"4C")}
+print "fig 4C calculated 3/3"
+
+{hbox.intercept(0)}
+{hbox.map("Fig 4 from Herzog et al. 2001", 240, 220, 600, 450)}
