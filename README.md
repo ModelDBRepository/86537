@@ -30,8 +30,7 @@ Alternatively you can:
 2. Compile the mod files as usual on your platform (run mknrndll under Windows, execute nrnivmodl in the extracted directory under Linux, or drag and drop the extracted folder onto the mknrndll icon under Mac OS X).
 3. Then start mosinit.hoc (double click on mosinit.hoc in Windows, type `nrngui mosinit.hoc` in Linux, or drag and drop the mosinit.hoc file onto the nrngui icon in Mac OS X). The above described figure buttons are created.
 
+## Changelog
 April 28th, 2009 Bug fixes in KDR supplied by Tom Andersson. The reversal potential and the ninf in KDR were corrected to those in the paper. Also Andersson suggested using the leak conductance value given in the paper (the one corresponding to 300 MOhm can also be used with a trivial difference in results). The paper value was implemented.
 
----
-
-2025-05-27 – Standardized to Markdown.
+May 27th, 2025 Standardized to Markdown.
